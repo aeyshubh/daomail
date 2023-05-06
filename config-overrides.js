@@ -9,12 +9,13 @@ module.exports = function override(config) {
       "http": require.resolve("stream-http"), 
       "https": require.resolve("https-browserify"), 
       "os": require.resolve("os-browserify"), 
-      "url": require.resolve("url")
+      "url": require.resolve("url"),
+      'process/browser': require.resolve('process/browser')
       }) 
    config.resolve.fallback = fallback; 
    config.plugins = (config.plugins || []).concat([ 
    	new webpack.ProvidePlugin({ 
-    	process: 'process/browser', 
+    	process: "process/browser",
       Buffer: ['buffer', 'Buffer'] 
     }) 
    ]) 

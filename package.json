@@ -5,7 +5,7 @@
   "dependencies": {
     "@aragon/sdk-client": "^1.5.0",
     "@ethersproject/wallet": "^5.7.0",
-    "@mailchain/sdk": "^0.19.1",
+    "@mailchain/sdk": "^0.18.4",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
