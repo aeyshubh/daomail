@@ -1,6 +1,6 @@
-# Mail-DAO
-* Mail-DAO aims to provide functionality of mailing service to DAO's for ease of communication in work flows.
-* Mail-DAO provides Token-gated access to Member's only chat .
+# DAO-MAIL
+* DAO-MAIL aims to provide functionality of mailing service to DAO's for ease of communication in work flows.
+* DAO-MAIL provides Token-gated access to Member's only chat .
 * For eg:
     * Group Chat Access : No. of tokens <x(Eg : 5)
     * Admin Chat Access : No. of tokens >x(Eg: 10)

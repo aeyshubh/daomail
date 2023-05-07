@@ -1,0 +1,18 @@
+.cont2 button {
+    margin: 20px;
+    background-color: #c7c7ff;
+    color: black;
+    font-weight: bold;
+    padding: 20px;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px rgb(205, 205, 205);
+    transition: .2s;
+    cursor: pointer;
+    outline: none;
+}
+
+
+.cont2 button:hover {
+    box-shadow: none;
+}

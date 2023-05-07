@@ -1,89 +1,72 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import { Wallet } from "@ethersproject/wallet";
-import { Mailchain } from '@mailchain/sdk';
-import axios from 'axios';
+import "./App.css";
+import { useContext, useRef, useState } from "react";
+import EmailEditor from "react-email-editor";
+import HTMLRenderer from "react-html-renderer";
+import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { configureChains, createClient, useAccount, WagmiConfig } from "wagmi";
+import { publicProvider } from "wagmi/providers/public";
+import { goerli, polygonMumbai } from "wagmi/chains";
+import Home from "./pages/Home/Home";
+import "@rainbow-me/rainbowkit/styles.css";
+import { Route, Routes } from "react-router-dom";
+import Auth from "./context/Auth";
+import CreateMail from "./components/CreateMail/CreateMail";
+import "react-toastify/dist/ReactToastify.css";
+import { Chat } from "@pushprotocol/uiweb";
+import { ethers } from "ethers";
+import { ToastContainer } from "react-toastify";
+import Body from "./components/Body/Body";
+import Home2 from "./pages/NewPage/Home2";
+import GroupChat from "./pages/GroupChat/GroupChat";
 
-import { useState, useEffect } from "react";
-import { Context, ContextParams } from "@aragon/sdk-client";
+const { chains, provider } = configureChains(
+  [goerli, polygonMumbai],
+  [publicProvider()]
+);
+const { connectors } = getDefaultWallets({
+  appName: "My RainbowKit App",
+  chains,
+});
+const wagmiClient = createClient({
+  autoConnect: true,
+  connectors,
+  provider,
+});
 
-import {
-  ContextPlugin,
-  MultisigClient
-} from "@aragon/sdk-client";
-function App() {
+function App(props) {
+  
+  // const { address } = useContext(Auth);
+  const {address} = useAccount()
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const _signer = provider.getSigner();
 
-  test();
-  const IPFS_API_KEY = process.env.REACT_APP_IPFS;
-  async function getData() {
-         console.log("Process :" + process.env.REACT_APP_PK)
-    
-        const contextParams = {
-          // Choose the network you want to use. You can use "goerli" or "mumbai" for testing, "mainnet" for Ethereum.
-          network: "maticmum",
-          // Depending on how you're configuring your wallet, you may want to pass in a `signer` object here.
-          signer: new Wallet(process.env.REACT_APP_PK),
-          // Optional on "rinkeby", "arbitrum-rinkeby" or "mumbai"
-          // Pass the address of the  `DaoFactory` contract you want to use. You can find it here based on your chain of choice: https://github.com/aragon/core/blob/develop/active_contracts.json
-          daoFactoryAddress: "0x3ff1681f31f68Ff2723d25Cf839bA7500FE5d218",
-          // Choose your Web3 provider: Cloudfare, Infura, Alchemy, etc.
-          web3Providers: ["https://rpc.ankr.com/polygon_mumbai"],
-          ipfsNodes: [
-            {
-              url: "https://testing-ipfs-0.aragon.network/api/v0",
-              headers: { "X-API-KEY": IPFS_API_KEY || "" }
-            },
-          ],
-          // Don't change this line. This is how we connect your app to the Aragon subgraph.
-          graphqlNodes: [
-            {
-              url:
-                "https://subgraph.satsuma-prod.com/qHR2wGfc5RLi6/aragon/osx-mumbai/api"
-            }
-          ]
-        };
-        const context = new Context(contextParams);
-    
-    
-        const contextPlugin = ContextPlugin.fromContext(context);
-        const multisigClient = new MultisigClient(contextPlugin);
-    
-        const daoAddressorEns = "0x14b6728571e0f47a0469496c33f696f7434e6a57"
-        const multisigMembers = await multisigClient.methods.getMembers(daoAddressorEns);
-    
-        console.log({ multisigMembers });
-        //sendMail(multisigMembers);
-        for (var i = 0; i < multisigMembers.length; i++) {
-          multisigMembers[i] = multisigMembers[i] + "@ethereum.mailchain.com"
-          //mails.push(mails[i]);
-        }
-    console.log(multisigMembers); 
-    //const secretRecoveryPhrase = process.env.REACT_APP_SECRET_RECOVERY_PHRASE; // 25 word mnemonicPhrase
-    //console.log(secretRecoveryPhrase);
-     const mailchain = Mailchain.fromSecretRecoveryPhrase(process.env.REACT_APP_SECRET_RECOVERY_PHRASE);
-
-    const user = await mailchain.user();
-    console.log("user is ", user); 
-    const result = await mailchain.sendMail({
-      from: user.address,
-      to: multisigMembers,
-      subject: 'A New DAO Proposal',
-      content: {
-        text: `Please Refer to the new proposal`,
-        html: `<H2>I AM Inevitable</h2>`,
-      }
-    });
-    console.log(result);
-  }
-
-  useEffect(() => {
-    getData();
-  }, []);
   return (
-    <div className="App">
+    <WagmiConfig client={wagmiClient}>
+      <RainbowKitProvider chains={chains}>
+        {/* <div>
+        <button onClick={exportHtml}>Export HTML</button>
+         <button onClick={saveDesign}>Save Design</button> 
+      </div> */}
 
-    </div>
+        {/* {htmll && <HTMLRenderer html={htmll} /> } */}
+
+        {/* <EmailEditor ref={emailEditorRef} /> */}
+        <div className="app">
+          <Routes>
+            <Route exact path="/" element={<Home2 />} />
+            <Route exact path="/send_mail" element={<Home />} />
+            <Route exact path="/group_chat" element={<GroupChat />} />
+          </Routes>
+        </div>
+        <Chat
+          account={address}
+          supportAddress="db30cc35f8ffebd917bea5ad8161baa702423c04a3e84509b966e544d6a4037e"
+          env="staging"
+          signer={_signer}
+        />
+        <ToastContainer autoClose={4000} />
+      </RainbowKitProvider>
+    </WagmiConfig>
   );
 }
 
