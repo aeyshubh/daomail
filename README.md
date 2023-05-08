@@ -16,3 +16,11 @@
 
 ## Future Scope
 * A Cross Chain DAO communication for ease of information sharing among different DAO's 
+* A more precise & customizable Proiviledges control.
+
+## Screenshots
+![Screenshot from 2023-05-08 11-04-03](https://user-images.githubusercontent.com/61881540/236742369-68d140b1-d576-4a8d-bde0-ec07f6ca7de6.png)
+![Screenshot from 2023-05-08 11-04-12](https://user-images.githubusercontent.com/61881540/236742380-34a571fe-1546-432f-9ced-60c1f40a02e1.png)
+![Screenshot from 2023-05-08 11-04-24](https://user-images.githubusercontent.com/61881540/236742390-8a5455d4-f9b2-435c-8590-9a18cc69bf48.png)
+![Screenshot from 2023-05-08 11-05-27](https://user-images.githubusercontent.com/61881540/236742414-02406b8a-a02a-44aa-805f-954858b98464.png)
+![Screenshot from 2023-05-08 11-10-00](https://user-images.githubusercontent.com/61881540/236742795-ff50f607-858c-4a1c-886a-e9180ec9fe9d.png)
