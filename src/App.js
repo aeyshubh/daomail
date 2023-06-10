@@ -17,8 +17,10 @@ import { ethers } from "ethers";
 import { ToastContainer } from "react-toastify";
 import Body from "./components/Body/Body";
 import Home2 from "./pages/NewPage/Home2";
-import GroupChat from "./pages/GroupChat/GroupChat";
-
+import CreateDao from "./pages/createDao/Dao";
+import Proposal from "./pages/proposal/Proposal";
+import Vote from "./pages/vote/Vote";
+import Profile from "./pages/Profile/Profile";
 const { chains, provider } = configureChains(
   [goerli, polygonMumbai],
   [publicProvider()]
@@ -55,18 +57,16 @@ function App(props) {
           <Routes>
             <Route exact path="/" element={<Home2 />} />
             <Route exact path="/send_mail" element={<Home />} />
-            <Route exact path="/group_chat" element={<GroupChat />} />
+            <Route exact path="/createProposal" element={<Proposal />} />
+            <Route exact path="/createDao" element={<CreateDao />} />
+            <Route exact path="/vote" element={<Vote />} />
+            <Route exact path="/profile" element={<Profile />} />
+
           </Routes>
         </div>
-        <Chat
-          account={address}
-          supportAddress="db30cc35f8ffebd917bea5ad8161baa702423c04a3e84509b966e544d6a4037e"
-          env="staging"
-          signer={_signer}
-        />
         <ToastContainer autoClose={4000} />
-      </RainbowKitProvider>
-    </WagmiConfig>
+        </RainbowKitProvider>
+           </WagmiConfig>
   );
 }
 

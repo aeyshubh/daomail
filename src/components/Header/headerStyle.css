@@ -1,6 +1,6 @@
 .header {
     width: 100%;
-    height: 90px;
+    height: 100%;
     z-index: 11;
     display: flex;
     justify-content: space-between;
@@ -9,6 +9,9 @@
     padding: 0 10px;
 }
 
+.b2{
+    margin-right:80px;
+}
 .header .img-search {
     display: flex;
     justify-content: flex-start;
@@ -69,8 +72,8 @@ ul li p:hover {
     ul li p {
         font-size: 1rem;
         margin: 0 5px 0 5px;
-        padding: 10px 15px;
-        width: 100px;
+        padding: 10px 10px;
+        width: 50px;
     }
 
     .header {

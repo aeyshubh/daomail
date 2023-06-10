@@ -5,7 +5,7 @@ import MailList from '../Mails/MailList'
 const Body = () => {
   return (
     <div className='body'>
-      <DAOList />
+      {/* <DAOList /> */}
       <MailList />
     </div>
   )

@@ -1,78 +1,41 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import './style.css'
-import { Wallet } from "@ethersproject/wallet";
+import { Select } from '@chakra-ui/select';
+import abi from "../../pages/abi/abi.json"
+import { ethers,Contract } from "ethers";
 import { Mailchain } from "@mailchain/sdk";
-import { Context, ContextParams } from "@aragon/sdk-client";
-import { ContextPlugin, MultisigClient } from "@aragon/sdk-client";
 import Auth from "../../context/Auth";
 import EmailEditor from "react-email-editor";
 import HTMLRenderer from "react-html-renderer";
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
-
-
 const CreateMail = () => {
-  var multisigMembers;
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const signer = provider.getSigner();
+  const contractAddress = process.env.REACT_APP_CONTRACT;
+  const contract = new ethers.Contract(contractAddress, abi, signer);
+var mails = [];
   const { HTML, SETHTML } = useContext(Auth);
   const emailEditorRef = useRef(null);
   // const [data, setData] = useState({});
   const navigate = useNavigate();
 
-  const IPFS_API_KEY = process.env.REACT_APP_IPFS;
-  async function getData(html) {
-    console.log("Process :" + process.env.REACT_APP_PK);
-
-    const contextParams = {
-      // Choose the network you want to use. You can use "goerli" or "mumbai" for testing, "mainnet" for Ethereum.
-      network: "maticmum",
-      // Depending on how you're configuring your wallet, you may want to pass in a `signer` object here.
-      signer: new Wallet(process.env.REACT_APP_PK),
-      // Optional on "rinkeby", "arbitrum-rinkeby" or "mumbai"
-      // Pass the address of the  `DaoFactory` contract you want to use. You can find it here based on your chain of choice: https://github.com/aragon/core/blob/develop/active_contracts.json
-      daoFactoryAddress: "0x3ff1681f31f68Ff2723d25Cf839bA7500FE5d218",
-      // Choose your Web3 provider: Cloudfare, Infura, Alchemy, etc.
-      web3Providers: ["https://rpc.ankr.com/polygon_mumbai"],
-      ipfsNodes: [
-        {
-          url: "https://testing-ipfs-0.aragon.network/api/v0",
-          headers: { "X-API-KEY": IPFS_API_KEY || "" },
-        },
-      ],
-      // Don't change this line. This is how we connect your app to the Aragon subgraph.
-      graphqlNodes: [
-        {
-          url: "https://subgraph.satsuma-prod.com/qHR2wGfc5RLi6/aragon/osx-mumbai/api",
-        },
-      ],
-    };
-    const context = new Context(contextParams);
-
-    const contextPlugin = ContextPlugin.fromContext(context);
-    const multisigClient = new MultisigClient(contextPlugin);
-
-    const daoAddressorEns = "0x14b6728571e0f47a0469496c33f696f7434e6a57";
-    multisigMembers = await multisigClient.methods.getMembers(
-      daoAddressorEns
-    );
-
-    console.log({ multisigMembers });
-    //sendMail(multisigMembers);
-    for (var i = 0; i < multisigMembers.length; i++) {
-      multisigMembers[i] = multisigMembers[i] + "@ethereum.mailchain.com";
+    async function getData(html) {
+      var data = await contract.participants();
+    for (var i = 0; i < data.length; i++) {
+      mails.push(data[i] + "@ethereum.mailchain.com");
       //mails.push(mails[i]);
     }
-    console.log(multisigMembers);
-    //const secretRecoveryPhrase = process.env.REACT_APP_SECRET_RECOVERY_PHRASE; // 25 word mnemonicPhrase
-    //console.log(secretRecoveryPhrase);
+  
     const mailchain = Mailchain.fromSecretRecoveryPhrase(
       process.env.REACT_APP_SECRET_RECOVERY_PHRASE
     );
-
+console.log( process.env.REACT_APP_SECRET_RECOVERY_PHRASE);
     const user = await mailchain.user();
     console.log("user is ", user);
     const result = await mailchain.sendMail({
       from: user.address,
-      to: multisigMembers,
+      to: mails,
       subject: "A New DAO Proposal",
       content: {
         text: `Please Refer to the new proposal`,
@@ -89,8 +52,8 @@ const CreateMail = () => {
       toast.success(`Proposal sent successfully`, {
         position: toast.POSITION.TOP_RIGHT
       });
-      console.log("exportHtml", html);
-      navigate('/')
+      //console.log("exportHtml", html);
+      //navigate('/')
     });
   };
 
@@ -112,6 +75,11 @@ const CreateMail = () => {
 
       <EmailEditor ref={emailEditorRef} />
       <div>
+      <Select placeholder='Select DAO' id ="sel">
+          <option value='0'>Developer Dao</option>
+          <option value='1'>Lear Web3 DAO</option>
+          <option value='2'>Tornado Cash DAO</option>
+        </Select>
         <button onClick={exportHtml}>Send Proposal</button>
         {/* <button onClick={saveDesign}>Save Design</button>  */}
       </div>

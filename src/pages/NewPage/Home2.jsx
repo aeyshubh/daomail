@@ -7,7 +7,7 @@ const Home2 = () => {
     <div className='container'>
         <Header />
         <img src={bg} alt="" />
-        <h1>Mail proposals for your DAO community</h1>
+        <h1>All in one DAO tool for VERSE Holders</h1>
     </div>
   )
 }
