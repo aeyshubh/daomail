@@ -4,7 +4,8 @@
 * For eg:
     * Group Chat Access : No. of tokens <x(Eg : 5)
     * Admin Chat Access : No. of tokens >x(Eg: 10)
-
+Deployed Contract address (use in .env with MailChain Backup Code): 
+REACT_APP_CONTRACT = "0x1B621c6Fb671E1bF244e3Bfc013b2c239B1E6e47"
 ## Why to use :
 * Reading Proposals from forum is quite time-consuming and not very interesting unless you are a dev.
 * The DAO Admin can just fetch all DAO members using a click and can share a brief summary of any new proposal to all the members in few clicks.
